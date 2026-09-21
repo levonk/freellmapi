@@ -1192,7 +1192,6 @@
     "startEmptyHint": "Legt die Kette ohne Modelle an und hält neue Katalogmodelle heraus. Ohne Haken startet sie als Kopie der Standardkette.",
     "curated": "Kuratiert",
     "curatedHint": "Neue Katalogmodelle werden dieser Kette nicht automatisch hinzugefügt.",
-    "rename": "Umbenennen",
     "renameHint": "Diese Kette umbenennen",
     "renameConfirm": "Kette \"{oldName}\" in \"{name}\" umbenennen? Clients, die auto:{oldName} aufrufen, müssen auf auto:{name} wechseln.",
     "renamePlaceholder": "Neuer Kettenname",

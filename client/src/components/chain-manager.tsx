@@ -106,7 +106,7 @@ export function ChainManager() {
   })
   const renameChain = useMutation({
     mutationFn: ({ profileId, name }: { profileId: number; name: string }) =>
-      apiFetch(`/api/profiles/${profileId}/rename`, { method: 'PUT', body: JSON.stringify({ name }) }),
+      apiFetch(`/api/profiles/${profileId}`, { method: 'PUT', body: JSON.stringify({ name }) }),
     onSuccess: () => {
       invalidate()
       setRenamingId(null)

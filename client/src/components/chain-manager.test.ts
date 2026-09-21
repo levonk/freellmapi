@@ -75,12 +75,13 @@ describe('chain manager', () => {
     expect(source).toContain('setCreateError')
   })
 
-  it('renames a chain through the dedicated endpoint, with a confirm (#1179)', () => {
+  it('renames a chain through the profile update endpoint, with a confirm (#1179)', () => {
     // A chain's name is the address clients route with (auto:<name>), so the
-    // rename must go through /rename — where the creation rules are enforced
-    // and protected chains get a real 403 — and must warn about in-flight
-    // auto:<old-name> callers before committing.
-    expect(source).toContain('/rename')
+    // rename goes through PUT /api/profiles/:id — where the creation rules
+    // are enforced and protected chains get a real 403 — and must warn about
+    // in-flight auto:<old-name> callers before committing.
+    expect(source).toMatch(/api\/profiles\/\$\{profileId\}`, \{ method: 'PUT'/)
+    expect(source).not.toContain('/rename')
     expect(source).toContain('chains.renameConfirm')
     expect(source).toContain('chains.renameFailed')
     // Only custom chains get the pencil, matching the delete affordance.

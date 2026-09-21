@@ -249,7 +249,7 @@ describe('named fallback chains', () => {
     // correctly throw "no enabled models" rather than prove the name moved.
     const chain = (await request('POST', '/api/profiles', { name: 'old-name' })).body;
 
-    const renamed = await request('PUT', `/api/profiles/${chain.id}/rename`, { name: 'new-name' });
+    const renamed = await request('PUT', `/api/profiles/${chain.id}`, { name: 'new-name' });
     expect(renamed.status).toBe(200);
     expect(renamed.body.name).toBe('new-name');
 
@@ -262,13 +262,13 @@ describe('named fallback chains', () => {
     await request('POST', '/api/profiles', { name: 'taken', empty: true });
     const mine = (await request('POST', '/api/profiles', { name: 'mine', empty: true })).body;
 
-    const clash = await request('PUT', `/api/profiles/${mine.id}/rename`, { name: 'TAKEN' });
+    const clash = await request('PUT', `/api/profiles/${mine.id}`, { name: 'TAKEN' });
     expect(clash.status).toBe(409);
   });
 
   it('lets a rename change only the case of the same name', async () => {
     const chain = (await request('POST', '/api/profiles', { name: 'casey', empty: true })).body;
-    const renamed = await request('PUT', `/api/profiles/${chain.id}/rename`, { name: 'Casey' });
+    const renamed = await request('PUT', `/api/profiles/${chain.id}`, { name: 'Casey' });
     expect(renamed.status).toBe(200);
     expect(renamed.body.name).toBe('Casey');
   });
@@ -276,14 +276,14 @@ describe('named fallback chains', () => {
   it('refuses reserved and invalid names on rename, same as on create', async () => {
     const chain = (await request('POST', '/api/profiles', { name: 'resizable', empty: true })).body;
 
-    const reserved = await request('PUT', `/api/profiles/${chain.id}/rename`, { name: 'auto' });
+    const reserved = await request('PUT', `/api/profiles/${chain.id}`, { name: 'auto' });
     expect(reserved.status).toBe(400);
     expect(reserved.body.error.message).toMatch(/reserved/i);
 
-    const invalid = await request('PUT', `/api/profiles/${chain.id}/rename`, { name: 'has spaces!' });
+    const invalid = await request('PUT', `/api/profiles/${chain.id}`, { name: 'has spaces!' });
     expect(invalid.status).toBe(400);
 
-    const long = await request('PUT', `/api/profiles/${chain.id}/rename`, { name: 'x'.repeat(21) });
+    const long = await request('PUT', `/api/profiles/${chain.id}`, { name: 'x'.repeat(21) });
     expect(long.status).toBe(400);
   });
 
@@ -291,7 +291,7 @@ describe('named fallback chains', () => {
     const db = getDb();
     const builtin = db.prepare("SELECT id FROM profiles WHERE type != 'custom'").get() as { id: number };
 
-    const denied = await request('PUT', `/api/profiles/${builtin.id}/rename`, { name: 'clever' });
+    const denied = await request('PUT', `/api/profiles/${builtin.id}`, { name: 'clever' });
     expect(denied.status).toBe(403);
     expect(denied.body.error.message).toMatch(/built-in/i);
   });
